@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: mealie
-  name: mealie
-  namespace: mealie
+    app: linkding
+  name: linkding
+  namespace: linkding
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mealie
+      app: linkding
   minReadySeconds: 5
   template:
     metadata:
       labels:
-        app: mealie
+        app: linkding
     spec:
       containers:
-      - image: ghcr.io/mealie-recipes/mealie:v3.5.0
-        name: mealie
+      - image: sissbruecker/linkding:1.44.1
+        name: linkding
         ports:
-          - containerPort: 9000
+          - containerPort: 9090

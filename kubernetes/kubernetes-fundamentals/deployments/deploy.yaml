@@ -2,25 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: test
-  name: test
+    app: nginx
+  name: nginx
 spec:
   replicas: 30
   selector:
     matchLabels:
-      app: test
+      app: nginx
   template:
     metadata:
       labels:
-        app: test
+        app: nginx
     spec:
       containers:
-        - image: httpd
-          name: httpd
-          # command: ["/bin/bash", "-c"]
+        - image: nginx
+          name: nginx
+          command: ["/bin/bash", "-c"]
   minReadySeconds: 5
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25% 
+      maxSurge: 1
+      maxUnavailable: 1 

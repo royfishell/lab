@@ -1,0 +1,7 @@
+{
+    "name": "Python 3",
+    "image": "mcr.microsoft.com/devcontainers/python:3",
+    "features": {
+              "ghcr.io/flexwie/devcontainer-features/op:1": {}
+  }
+}

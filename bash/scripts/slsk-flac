@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+find "$HOME/Soulseek Downloads/complete" -type f -iname "*.flac" \
+  -exec sh -c '
+    in="$1"
+    out="${in%.flac}.aiff"
+    ffmpeg -i "$in" -write_id3v2 1 -map_metadata 0 -c:a pcm_s16le "$out"
+  ' _ {} \;

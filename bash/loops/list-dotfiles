@@ -1,0 +1,8 @@
+#!/bin/bash
+
+dotfiles_dir="${HOME}/dotfiles"
+
+for file in ${dotfiles_dir}/*; do
+	[[ -f "$file" ]] || continue
+	echo "$file"
+done

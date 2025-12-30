@@ -1,6 +1,3 @@
 [tools]
-bat = "latest"
-fzf = "latest"
-neovim = "latest"
-ripgrep = "latest"
-starship = "latest"
+node = "latest"
+npm = "latest"

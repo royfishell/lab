@@ -1,7 +1,10 @@
 {
-    "name": "Python 3",
-    "image": "mcr.microsoft.com/devcontainers/python:3",
-    "features": {
-              "ghcr.io/flexwie/devcontainer-features/op:1": {}
-  }
+  "build": {
+    "context": "..",
+    "dockerfile": "Dockerfile"
+  },
+  "containerEnv": {
+    "MISE_GITHUB_TOKEN": "${localEnv:MISE_GITHUB_TOKEN}"
+  },
+    "postCreateCommand": "scripts/setup"
 }

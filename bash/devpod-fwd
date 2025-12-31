@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 script_name="${0##*/}"
 
 usage() {
@@ -55,7 +53,7 @@ up | down)
     echo "${devpod_name}:${devpod_port} now available at localhost:${local_port}"
 
   else
-    ssh -S "$sock" -O exit "${host}" || true
+    ssh -S "$sock" -O exit "${host}" &>/dev/null || true
     rm -f "$sock"
     echo "${devpod_name}:${devpod_port} connection closed"
   fi

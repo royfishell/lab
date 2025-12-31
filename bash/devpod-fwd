@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_name="${0##*/}"
+
+usage() {
+  cat <<EOF
+Usage:
+  ${script_name} up   DEVPOD_NAME DEVPOD_PORT [LOCAL_PORT]
+  ${script_name} down DEVPOD_NAME DEVPOD_PORT [LOCAL_PORT]
+
+Description:
+  Forward a port from a devpod to localhost using SSH.
+
+Notes:
+  - LOCAL_PORT defaults to DEVPOD_PORT if omitted.
+
+Examples:
+  ${script_name} up homelab 9090
+  ${script_name} up homelab 9090 19090
+  ${script_name} down homelab 9090
+EOF
+}
+
+case "${1:-}" in
+"" | -h | --help)
+  usage
+  exit 0
+  ;;
+
+up | down)
+  devpod_name="$2"
+  devpod_port="$3"
+  local_port="${4:-$devpod_port}"
+
+  if [[ -z "${devpod_name}" ]] || [[ -z "${devpod_port}" ]] || [[ -z "${local_port}" ]]; then
+    usage >&2
+    exit 1
+  fi
+
+  sock="$HOME/.ssh/${devpod_name}.devpod.${local_port}.sock"
+  host="${devpod_name}.devpod"
+
+  if [[ "$1" == "up" ]]; then
+    if ! ssh -M -S "$sock" \
+      -fN \
+      -o ExitOnForwardFailure=yes \
+      -L "${local_port}:127.0.0.1:${devpod_port}" \
+      "$host"; then
+      echo "Error: could not forward localhost:${local_port} to ${devpod_name}:${devpod_port}"
+      exit 1
+    fi
+
+    echo "${devpod_name}:${devpod_port} now available at localhost:${local_port}"
+
+  else
+    ssh -S "$sock" -O exit "${host}" || true
+    rm -f "$sock"
+    echo "${devpod_name}:${devpod_port} connection closed"
+  fi
+  ;;
+
+*)
+  usage >&2
+  exit 1
+  ;;
+esac
